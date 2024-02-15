@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -56,7 +57,25 @@ namespace BudgetBossClient
 
         private bool Registra(String username, String password)
         {
+            try
+            {
+                // Creazione dell'oggetto JSON contenente username e password
+                var credentials = new { Username = username, Password = password };
+                string jsonData = JsonConvert.SerializeObject(credentials);
 
+                // Invio al server del tipo di operazione ("login") e dell'oggetto JSON
+                writer.WriteLine("register|" + jsonData);
+                writer.Flush();
+
+                // Ricezione dal server di un booleano
+                string response = reader.ReadLine();
+                return bool.Parse(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Errore durante la registrazione: {ex.Message}");
+                return false;
+            }
         }
     }
 }

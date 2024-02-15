@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBossClient", "BudgetBossClient\BudgetBossClient.csproj", "{D75AD1DF-00D0-4C2F-9C53-DC9B26EF09E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetBossServer", "BudgetBossServer\BudgetBossServer.csproj", "{5658618A-B30D-4D58-97F8-EED1F6DBC08F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D75AD1DF-00D0-4C2F-9C53-DC9B26EF09E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D75AD1DF-00D0-4C2F-9C53-DC9B26EF09E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D75AD1DF-00D0-4C2F-9C53-DC9B26EF09E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5658618A-B30D-4D58-97F8-EED1F6DBC08F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5658618A-B30D-4D58-97F8-EED1F6DBC08F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5658618A-B30D-4D58-97F8-EED1F6DBC08F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5658618A-B30D-4D58-97F8-EED1F6DBC08F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
