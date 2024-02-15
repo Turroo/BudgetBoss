@@ -134,17 +134,33 @@ public class Server
             Console.WriteLine("Utente già esistente");
             return "False";
         }
-
-        usersList.Add(new User(username, password));
+        User u = new User(username, password);
+        usersList.Add(u);
         Console.WriteLine("Registrato con successo l'utente con user: " + username + " e password: " + password);
+        temp = u;
         SaveUserList();
 
         return "True";
     }
 
-    private static void AddFinanzeIniziali(String jsonObject)
+    private static string AddFinanzeIniziali(String jsonObject)
     {
         dynamic obj = JsonConvert.DeserializeObject(jsonObject);
+        temp.Carte = obj.Carte;
+        temp.Contanti = obj.Contanti;
+        temp.FinanzeOnline = obj.FinanzeOnline;
+        if(ReplaceUser(temp))
+        {
+            Console.WriteLine("Aggiunte con successo le finanze iniziali all'utente: " + temp.Username);
+            SaveUserList();
+            return "True";
+        }
+
+        Console.WriteLine("Non è stato possibile aggiungere le finanze iniziali all'utente: " + temp.Username);
+        return "False";
+        
+
+
     }
 
     private static void LoadUserList()
@@ -181,6 +197,21 @@ public class Server
         Console.WriteLine("Scritta su file la nuova lista aggiornata");
     }
 
+    private static bool ReplaceUser(User toAdd)
+    {
+        foreach (User u in usersList)
+        {
+            if(u.Username==toAdd.Username)
+            {
+                usersList.Remove(u);
+                usersList.Add(toAdd);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
 
@@ -192,7 +223,7 @@ public class User
     public String Password { get; set; }
     public double Contanti { get; set; }
     public double Carte { get; set; }
-    public double PagamentiOnline {  get; set; }
+    public double FinanzeOnline {  get; set; }
 
     public User(String username, String password)
     {
@@ -200,7 +231,7 @@ public class User
         Password = password;
         Contanti = 0;
         Carte = 0;
-        PagamentiOnline = 0;
+        FinanzeOnline = 0;
     }
 }
 

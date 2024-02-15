@@ -32,8 +32,8 @@ namespace BudgetBossClient
 
         private void RegisterButton_Click(object sender, EventArgs e)
         {
-            String username = this.txtUsername.Text;
-            String password = this.txtPassword.Text;
+            string username = this.txtUsername.Text;
+            string password = this.txtPassword.Text;
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -46,6 +46,9 @@ namespace BudgetBossClient
             if (registrato)
             {
                 MessageBox.Show("Registrazione effettuata con successo!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FinanzeIniziali finanzeInizialiForm = new FinanzeIniziali(writer, reader);
+                finanzeInizialiForm.Show();
+                this.Hide();
                 return;
             }
             else
