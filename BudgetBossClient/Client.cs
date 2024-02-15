@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BudgetBossClient
@@ -24,19 +20,19 @@ namespace BudgetBossClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if(ConnectToServer())
+
+            // Connessione al server
+            if (ConnectToServer())
             {
-                Application.Run(new Login(writer,reader));
+                // Avvio dell'applicazione client
+                Application.Run(new Login(writer, reader));
             }
             else
             {
                 MessageBox.Show("Impossibile connettersi al server. Verifica che il server sia in esecuzione e riprova.", "Errore di connessione", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            
-            
         }
-        
+
         static bool ConnectToServer()
         {
             try
@@ -47,12 +43,14 @@ namespace BudgetBossClient
 
                 Console.WriteLine("Connesso con successo al server\n");
 
-                writer = new StreamWriter(new NetworkStream(clientSocket));
-                reader = new StreamReader(new NetworkStream(clientSocket));
+                // Inizializzazione degli stream per la comunicazione
+                NetworkStream stream = new NetworkStream(clientSocket);
+                writer = new StreamWriter(stream);
+                reader = new StreamReader(stream);
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Errore nella connessione al server: " + ex.Message);
                 return false;
@@ -63,10 +61,16 @@ namespace BudgetBossClient
         {
             try
             {
+                // Invio richiesta di disconnessione al server
+                writer.WriteLine("disconnect");
+                writer.Flush();
+
+                // Chiusura della connessione e degli stream
+                clientSocket.Shutdown(SocketShutdown.Both);
                 clientSocket.Close();
                 Console.WriteLine("Disconnesso con successo dal server");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Impossibile disconnettersi dal server: " + ex.ToString());
             }
