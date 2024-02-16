@@ -104,6 +104,10 @@ public class Server
                 return SendCurrentUser(temp);
             case "getCategorie":
                 return SendCategorie(categorie);
+            case "aggiungiCategoria":
+                return AggiungiCategoria(categorie, parts[1]);
+            case "rimuoviCategoria":
+                return RimuoviCategoria(categorie, parts[1]);
             default:
                 return "non ci entra";
         }
@@ -182,6 +186,46 @@ public class Server
         return JsonConvert.SerializeObject(categorie);
     }
 
+    private static string AggiungiCategoria(List<Categoria> categorie,string categoria)
+    {
+        if(categorie.Count == 8)
+        {
+            Console.WriteLine("Numero massimo di categorie raggiunto (8)");
+            return "maximum";
+        }
+
+        else if(checkCategoria(categorie,categoria))
+        {
+            Console.WriteLine("Categoria " + categoria + " già presente in memoria");
+            return "already";
+        }
+
+        else
+        {
+            Console.WriteLine("Aggiungo la nuova categoria: " + categoria);
+            categorie.Add(new Categoria(categoria));
+            SaveCategorieList();
+            return "OK";
+        }
+    }
+
+    private static string RimuoviCategoria(List<Categoria> categorie, string categoria)
+    {
+        if(checkCategoria(categorie,categoria))
+        {
+            Console.WriteLine("Rimuovo la categoria: " + categoria);
+            Categoria toRemove = categorie.FirstOrDefault(c => c.nomeCategoria == categoria);
+            categorie.Remove(toRemove);
+            SaveCategorieList();
+            return "True";
+        }
+        else
+        {
+            Console.WriteLine("Categoria non presente");
+            return "False";
+        }
+    }
+
     private static void LoadUserList()
     {
         if (File.Exists(userListFilePath))
@@ -207,6 +251,17 @@ public class Server
             File.Create(path).Close();
             Console.WriteLine("File utenti creato con successo.");
         }
+    }
+
+    private static bool checkCategoria(List<Categoria> categorie, string categoria)
+    {
+        foreach(Categoria c in categorie)
+        {
+            if (c.nomeCategoria.ToLower().Equals(categoria.ToLower()))
+                return true;
+        }
+
+        return false;
     }
 
     private static void LoadCategorie()

@@ -86,7 +86,7 @@ namespace BudgetBossClient
                 MessageBox.Show("Impossibile ottenere l'oggetto utente corrente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
-        }
+        }  
 
         private List<Categoria> getCategorie()
         {
