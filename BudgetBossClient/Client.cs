@@ -76,4 +76,35 @@ namespace BudgetBossClient
             }
         }
     }
+
+    public class User
+    {
+        public String Username { get; set; }
+        public String Password { get; set; }
+        public double Contanti { get; set; }
+        public double Carte { get; set; }
+        public double FinanzeOnline { get; set; }
+
+        public User(string username, string password)
+        {
+            Username = username;
+            Password = password;
+            Contanti = 0;
+            Carte = 0;
+            FinanzeOnline = 0;
+        }
+
+        
+    }
+
+    public class Categoria
+    {
+        public string nomeCategoria { get; set; }
+
+        public Categoria(string nomeCategoria)
+        {
+            this.nomeCategoria = nomeCategoria;
+        }
+
+    }
 }

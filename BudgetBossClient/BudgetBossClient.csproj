@@ -55,6 +55,24 @@
     <Compile Include="FinanzeIniziali.Designer.cs">
       <DependentUpon>FinanzeIniziali.cs</DependentUpon>
     </Compile>
+    <Compile Include="FirstView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FirstView.Designer.cs">
+      <DependentUpon>FirstView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GestioneCategorie.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GestioneCategorie.Designer.cs">
+      <DependentUpon>GestioneCategorie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HomeDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HomeDashboard.Designer.cs">
+      <DependentUpon>HomeDashboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +89,15 @@
     </Compile>
     <EmbeddedResource Include="FinanzeIniziali.resx">
       <DependentUpon>FinanzeIniziali.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FirstView.resx">
+      <DependentUpon>FirstView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GestioneCategorie.resx">
+      <DependentUpon>GestioneCategorie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HomeDashboard.resx">
+      <DependentUpon>HomeDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

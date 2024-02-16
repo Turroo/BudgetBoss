@@ -14,12 +14,15 @@ public class Server
     private static StreamWriter writer;
     private static StreamReader reader;
     private static List<User> usersList = new List<User>();
+    private static List<Categoria> categorie = new List<Categoria>();
     private static readonly string userListFilePath = "users.json";
+    private static readonly string categorieFilePath = "categorie.json";
     private static User temp;
 
     public static void Main(string[] args)
     {
         LoadUserList();
+        LoadCategorie();
         try
         {
             // Crea un'endpoint per il server
@@ -97,6 +100,10 @@ public class Server
                 return Register(parts[1]);
             case "finanzeIniziali":
                 return AddFinanzeIniziali(parts[1]);
+            case "getCurrentUser":
+                return SendCurrentUser(temp);
+            case "getCategorie":
+                return SendCategorie(categorie);
             default:
                 return "non ci entra";
         }
@@ -163,6 +170,18 @@ public class Server
 
     }
 
+    private static string SendCurrentUser(User u)
+    {
+        Console.WriteLine("Inviato con successo al client l'utente: " +  u.Username);
+        return JsonConvert.SerializeObject(u);
+    }
+
+    private static string SendCategorie(List<Categoria> categorie)
+    {
+        Console.WriteLine("Inviato con successo al client la lista di categorie");
+        return JsonConvert.SerializeObject(categorie);
+    }
+
     private static void LoadUserList()
     {
         if (File.Exists(userListFilePath))
@@ -186,7 +205,47 @@ public class Server
             Console.WriteLine("Aperta con successo la lista utenti, il file non esisteva");
             string path = "users.json";
             File.Create(path).Close();
-            Console.WriteLine("File creato con successo.");
+            Console.WriteLine("File utenti creato con successo.");
+        }
+    }
+
+    private static void LoadCategorie()
+    {
+        if (File.Exists(categorieFilePath))
+        {
+            string json = File.ReadAllText(categorieFilePath);
+            if (!string.IsNullOrEmpty(json))
+            {
+                categorie = JsonConvert.DeserializeObject<List<Categoria>>(json);
+                Console.WriteLine("Aperta con successo la lista categorie, file popolato");
+            }
+            else
+            {
+                categorie =
+                [
+                    new Categoria("Cibo"),
+                    new Categoria("Intrattenimento"),
+                    new Categoria("Shopping"),
+                    new Categoria("Stipendio"),
+                ];
+                SaveCategorieList();
+                Console.WriteLine("Aperta con successo la lista categorie, file vuoto");
+            }
+
+        }
+        else
+        {
+            categorie =
+                [
+                    new Categoria("Cibo"),
+                    new Categoria("Intrattenimento"),
+                    new Categoria("Shopping"),
+                    new Categoria("Stipendio"),
+                ];
+            Console.WriteLine("Aperta con successo la lista categorie, il file non esisteva");
+            File.Create(categorieFilePath).Close();
+            SaveCategorieList();
+            Console.WriteLine("File categorie creato con successo.");
         }
     }
 
@@ -194,8 +253,16 @@ public class Server
     {
         string json = JsonConvert.SerializeObject(usersList);
         File.WriteAllText(userListFilePath, json);
-        Console.WriteLine("Scritta su file la nuova lista aggiornata");
+        Console.WriteLine("Scritta su file la nuova lista utenti aggiornata");
     }
+
+    private static void SaveCategorieList()
+    {
+        string json = JsonConvert.SerializeObject(categorie);
+        File.WriteAllText(categorieFilePath, json);
+        Console.WriteLine("Scritta su file la nuova lista categorie aggiornata");
+    }
+
 
     private static bool ReplaceUser(User toAdd)
     {
@@ -233,5 +300,16 @@ public class User
         Carte = 0;
         FinanzeOnline = 0;
     }
+}
+
+public class Categoria
+{
+    public string nomeCategoria { get; set; }
+
+    public Categoria(string nomeCategoria)
+    {
+        this.nomeCategoria = nomeCategoria;
+    }
+
 }
 

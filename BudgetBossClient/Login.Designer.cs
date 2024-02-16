@@ -45,7 +45,7 @@
             this.welcomeLabel.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.welcomeLabel.Location = new System.Drawing.Point(10, 8);
             this.welcomeLabel.Name = "welcomeLabel";
-            this.welcomeLabel.Size = new System.Drawing.Size(679, 72);
+            this.welcomeLabel.Size = new System.Drawing.Size(459, 72);
             this.welcomeLabel.TabIndex = 0;
             this.welcomeLabel.Text = "Benvenuto su BudgetBoss";
             this.welcomeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -53,7 +53,7 @@
             // labelUsername
             // 
             this.labelUsername.Font = new System.Drawing.Font("Calibri", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUsername.Location = new System.Drawing.Point(144, 117);
+            this.labelUsername.Location = new System.Drawing.Point(37, 111);
             this.labelUsername.Name = "labelUsername";
             this.labelUsername.Size = new System.Drawing.Size(127, 28);
             this.labelUsername.TabIndex = 1;
@@ -62,7 +62,7 @@
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(251, 122);
+            this.txtUsername.Location = new System.Drawing.Point(144, 116);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(205, 23);
             this.txtUsername.TabIndex = 2;
@@ -70,7 +70,7 @@
             // labelPassword
             // 
             this.labelPassword.Font = new System.Drawing.Font("Calibri", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPassword.Location = new System.Drawing.Point(144, 173);
+            this.labelPassword.Location = new System.Drawing.Point(37, 167);
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(127, 28);
             this.labelPassword.TabIndex = 3;
@@ -79,7 +79,7 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(251, 181);
+            this.txtPassword.Location = new System.Drawing.Point(144, 175);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(205, 23);
             this.txtPassword.TabIndex = 4;
@@ -87,7 +87,7 @@
             // LoginButton
             // 
             this.LoginButton.Font = new System.Drawing.Font("Calibri", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginButton.Location = new System.Drawing.Point(304, 228);
+            this.LoginButton.Location = new System.Drawing.Point(197, 222);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(81, 36);
             this.LoginButton.TabIndex = 5;
@@ -98,7 +98,7 @@
             // LinkLabelRegister
             // 
             this.LinkLabelRegister.AutoSize = true;
-            this.LinkLabelRegister.Location = new System.Drawing.Point(260, 279);
+            this.LinkLabelRegister.Location = new System.Drawing.Point(153, 273);
             this.LinkLabelRegister.Name = "LinkLabelRegister";
             this.LinkLabelRegister.Size = new System.Drawing.Size(169, 15);
             this.LinkLabelRegister.TabIndex = 6;
@@ -111,7 +111,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(700, 422);
+            this.ClientSize = new System.Drawing.Size(480, 513);
             this.Controls.Add(this.LinkLabelRegister);
             this.Controls.Add(this.LoginButton);
             this.Controls.Add(this.txtPassword);

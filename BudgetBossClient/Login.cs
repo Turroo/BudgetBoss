@@ -46,16 +46,63 @@ namespace BudgetBossClient
             }
 
             bool autenticato = Autentica(username, password);
+            
+
+            
 
             if(autenticato)
             {
                 MessageBox.Show("Login effettuato con successo!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                User currentUser = getUser();
+                List<Categoria> categorie = getCategorie();
+                if (currentUser!=null && categorie!=null)
+                {
+                    HomeDashboard homeView = new HomeDashboard(writer, reader, currentUser, categorie);
+                    homeView.Show();
+                    this.Hide();
+                }
                 return;
             }
             else
             {
                 MessageBox.Show("Username o password errate", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+        }
+
+        private User getUser()
+        {
+            try
+            {
+                writer.WriteLine("getCurrentUser|");
+                writer.Flush();
+                string response = reader.ReadLine();
+                User currentUser = JsonConvert.DeserializeObject<User>(response);
+                MessageBox.Show("Oggetto utente ottenuto con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return currentUser;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Impossibile ottenere l'oggetto utente corrente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        private List<Categoria> getCategorie()
+        {
+            try
+            {
+                writer.WriteLine("getCategorie|");
+                writer.Flush();
+                string response = reader.ReadLine();
+                List<Categoria> categorie = JsonConvert.DeserializeObject<List<Categoria>>(response);
+                MessageBox.Show("Lista categorie ottenuta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return categorie;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossibile ottenere la lista categorie corrente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
             }
         }
 
