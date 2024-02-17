@@ -347,6 +347,8 @@ public class User
     public double Carte { get; set; }
     public double FinanzeOnline {  get; set; }
 
+    public List<Transazione> Transazioni {  get; set; }
+
     public User(String username, String password)
     {
         Username = username;
@@ -354,6 +356,7 @@ public class User
         Contanti = 0;
         Carte = 0;
         FinanzeOnline = 0;
+        Transazioni = new List<Transazione>();
     }
 }
 
@@ -366,5 +369,37 @@ public class Categoria
         this.nomeCategoria = nomeCategoria;
     }
 
+}
+
+public class Transazione
+{
+    public int id { get; set; }
+    public double importo { get; set; }
+    public MetodoDiPagamento metodoDiPagamento { get; set; }
+    public DateTime dateTime { get; set; }
+    public Categoria categoria { get; set; }
+    public NaturaTransazione naturaTransazione{ get; set; }
+    
+    public Transazione(int id, double importo, MetodoDiPagamento metodoDiPagamento, DateTime dateTime, Categoria categoria, NaturaTransazione naturaTransazione)
+    {
+        this.id = id;
+        this.importo = importo;
+        this.metodoDiPagamento = metodoDiPagamento;
+        this.dateTime = dateTime;
+        this.categoria = categoria;
+        this.naturaTransazione = naturaTransazione;
+    }
+
+
+}
+
+public enum MetodoDiPagamento
+{
+    Contanti,Carte,FinanzeOnline
+}
+
+public enum NaturaTransazione
+{
+    Entrata, Uscita
 }
 

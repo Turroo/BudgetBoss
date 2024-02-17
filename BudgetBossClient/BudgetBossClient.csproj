@@ -73,6 +73,12 @@
     <Compile Include="GestioneCategorie.Designer.cs">
       <DependentUpon>GestioneCategorie.cs</DependentUpon>
     </Compile>
+    <Compile Include="GestioneFinanze.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GestioneFinanze.Designer.cs">
+      <DependentUpon>GestioneFinanze.cs</DependentUpon>
+    </Compile>
     <Compile Include="HomeDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,12 +92,30 @@
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="Client.cs" />
+    <Compile Include="MetodiPagamento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MetodiPagamento.Designer.cs">
+      <DependentUpon>MetodiPagamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowCategorie.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowCategorie.Designer.cs">
+      <DependentUpon>WindowCategorie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowNatura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowNatura.Designer.cs">
+      <DependentUpon>WindowNatura.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="AggiungiCategoria.resx">
       <DependentUpon>AggiungiCategoria.cs</DependentUpon>
@@ -105,11 +129,17 @@
     <EmbeddedResource Include="GestioneCategorie.resx">
       <DependentUpon>GestioneCategorie.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GestioneFinanze.resx">
+      <DependentUpon>GestioneFinanze.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HomeDashboard.resx">
       <DependentUpon>HomeDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetodiPagamento.resx">
+      <DependentUpon>MetodiPagamento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -122,6 +152,12 @@
     </Compile>
     <EmbeddedResource Include="Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowCategorie.resx">
+      <DependentUpon>WindowCategorie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowNatura.resx">
+      <DependentUpon>WindowNatura.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

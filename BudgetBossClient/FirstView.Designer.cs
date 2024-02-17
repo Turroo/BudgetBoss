@@ -109,7 +109,7 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(3, 239);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(264, 74);
+            this.label5.Size = new System.Drawing.Size(361, 74);
             this.label5.TabIndex = 2;
             this.label5.Text = "Metodi di Pagamento Online";
             // 

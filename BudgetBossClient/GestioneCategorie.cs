@@ -59,6 +59,7 @@ namespace BudgetBossClient
                 if(string.IsNullOrEmpty(toRemove))
                 {
                     MessageBox.Show("Seleziona una categoria dalla lista", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
                 writer.WriteLine("rimuoviCategoria|" + toRemove);
                 writer.Flush();
