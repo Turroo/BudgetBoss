@@ -41,7 +41,7 @@ namespace BudgetBossClient
                 {
                     case "OK":
                         {
-                            MessageBox.Show("Categoria " + toSend + " aggiunta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            
                             CategoriaAggiunta?.Invoke(toSend);
                             return;
                         }

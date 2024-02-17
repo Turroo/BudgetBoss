@@ -49,8 +49,8 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -209,6 +209,7 @@
             this.button1.TabIndex = 10;
             this.button1.Text = "Aggiungi Transazione";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -266,16 +267,6 @@
             this.panel1.Size = new System.Drawing.Size(160, 265);
             this.panel1.TabIndex = 15;
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(13, 172);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(131, 29);
-            this.button3.TabIndex = 16;
-            this.button3.Text = "Filtra";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(13, 221);
@@ -285,6 +276,16 @@
             this.button4.Text = "Ripristina";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(13, 172);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(131, 29);
+            this.button3.TabIndex = 16;
+            this.button3.Text = "Filtra";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // GestioneFinanze
             // 

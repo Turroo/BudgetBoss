@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -159,6 +160,31 @@ namespace BudgetBossClient
         private void button4_Click(object sender, EventArgs e)
         {
             PopolaTabella(transazioniUtente);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddTransazione(Transazione t)
+        {
+            try
+            {
+                string toSend = JsonConvert.SerializeObject(t);
+                if (string.IsNullOrEmpty(toSend))
+                    return;
+                writer.WriteLine("aggiungiTransazione|" + toSend);
+                writer.Flush();
+
+                string response = reader.ReadLine();
+                bool aggiunto = bool.Parse(response);
+
+                if(aggiunto)
+                {
+                    MessageBox.Show("Transazione " + t.id + " aggiunta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 
