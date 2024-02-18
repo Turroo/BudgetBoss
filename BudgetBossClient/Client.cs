@@ -131,6 +131,12 @@ namespace BudgetBossClient
             this.naturaTransazione = naturaTransazione;
         }
 
+        public override string ToString()
+        {
+            return $"{id}: {importo} € - {metodoDiPagamento} - {dateTime} - {categoria.nomeCategoria} - {naturaTransazione}";
+        }
+
+
 
     }
 

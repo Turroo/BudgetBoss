@@ -208,8 +208,52 @@ namespace BudgetBossClient
             PopolaTabella(user.Transazioni);
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            RimuoviTransazione rimuoviTransazione = new RimuoviTransazione(writer, reader, user);
+            rimuoviTransazione.TransazioneRimossa += HandleRemoveTransaction;
+            rimuoviTransazione.Show();
+        }
 
-       
+        private void HandleRemoveTransaction(Transazione t)
+        {
+            user.Transazioni.Remove(t);
+            if (t.naturaTransazione.Equals(NaturaTransazione.Entrata))
+            {
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+                {
+                    user.Carte -= t.importo;
+                }
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+                {
+                    user.Contanti -= t.importo;
+                }
+
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+                {
+                    user.FinanzeOnline -= t.importo;
+                }
+            }
+            else
+            {
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+                {
+                    user.Carte += t.importo;
+                }
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+                {
+                    user.Contanti += t.importo;
+                }
+
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+                {
+                    user.FinanzeOnline += t.importo;
+                }
+            }
+
+            UpdateValues();
+            PopolaTabella(user.Transazioni);
+        }
     }
 
 

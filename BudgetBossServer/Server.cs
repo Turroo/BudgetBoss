@@ -110,6 +110,8 @@ public class Server
                 return RimuoviCategoria(categorie, parts[1]);
             case "aggiungiTransazione":
                 return AggiungiTransazione(parts[1], parts[2]);
+            case "rimuoviTransazione":
+                return RimuoviTransazione(parts[1], parts[2]);
             default:
                 return "non ci entra";
         }
@@ -340,6 +342,23 @@ public class Server
 
     }
 
+    private static string RimuoviTransazione(string jsonTransaction,string username)
+    {
+        User u = GetUser(username);
+        Transazione t = JsonConvert.DeserializeObject<Transazione>(jsonTransaction);
+        if (PostRemoveTransaction(u, t))
+        {
+            Console.WriteLine("Transazione con id: " + t.id + " rimossa con successo");
+            SaveUserList();
+            return "True";
+        }
+        else
+        {
+            Console.WriteLine("Impossibile rimuovere la transazione con id: " + t.id);
+            return "False";
+        }
+    }
+
     private static bool PostAddTransaction(User u, Transazione t)
     {
         u.Transazioni.Add(t);
@@ -387,6 +406,67 @@ public class Server
                 usersList.Remove(u);
                 usersList.Add(toAdd);
                 return true;
+            }
+        }
+
+        return false;
+    }
+    
+    private static bool PostRemoveTransaction(User u, Transazione t)
+    {
+        if (!RemoveTransactionFromUser(u, t.id))
+            return false;
+        if (t.naturaTransazione.Equals(NaturaTransazione.Entrata))
+        {
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+            {
+                u.Carte -= t.importo;
+            }
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+            {
+                u.Contanti -= t.importo;
+            }
+
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+            {
+                u.FinanzeOnline -= t.importo;
+            }
+        }
+        else
+        {
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+            {
+                u.Carte += t.importo;
+            }
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+            {
+                u.Contanti += t.importo;
+            }
+
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+            {
+                u.FinanzeOnline += t.importo;
+            }
+        }
+
+        return ReplaceUser(u);
+
+    }
+
+    private static bool RemoveTransactionFromUser(User u,int id)
+    {
+        foreach(User user in usersList)
+        {
+            if(user.Username==u.Username) 
+            {
+                foreach(Transazione t in user.Transazioni)
+                {
+                    if(t.id == id)
+                    {
+                        user.Transazioni.Remove(t);
+                        return true;
+                    }
+                }
             }
         }
 
