@@ -14,40 +14,26 @@ namespace BudgetBossClient
 {
     public partial class AggiungiTransazione : Form
     {
+        public event Action<Transazione> TransazioneAggiunta;
+
         private StreamWriter writer;
         private StreamReader reader;
         private User u;
-        public AggiungiTransazione(StreamWriter writer, StreamReader reader, User u)
+        private List<Categoria> categorie;
+        public AggiungiTransazione(StreamWriter writer, StreamReader reader, User u,List<Categoria> categorie)
         {
             InitializeComponent();
             this.writer = writer;
             this.reader = reader;
             this.u = u;
+            this.categorie = categorie;
+            PopulateCombo();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Transazione temp = createTransazione();
-            if(temp == null)
-            {
-                return;
-            }
-            try
-            {
-                string toSend = JsonConvert.SerializeObject(temp);
-                if (string.IsNullOrEmpty(toSend))
-                    return;
-                writer.WriteLine("aggiungiTransazione|" + toSend);
-                writer.Flush();
-
-                string response = reader.ReadLine();
-                bool aggiunto = bool.Parse(response);
-
-                if (aggiunto)
-                {
-                    MessageBox.Show("Transazione con id: " + temp.id + " aggiunta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
+            AddTransazione();
+            this.Close();
         }
 
         private Transazione createTransazione()
@@ -66,6 +52,115 @@ namespace BudgetBossClient
 
             return result;
 
+        }
+
+        private bool checkBalance(Transazione t)
+        {
+            if(checkId(t))
+            {
+                MessageBox.Show("Esiste già una transazione con il medesimo ID", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            
+            if(t.naturaTransazione.Equals(NaturaTransazione.Uscita))
+            {
+                if(t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+                {
+                    if(t.importo > u.Carte)
+                    {
+                        MessageBox.Show("Non hai abbastanza credito sulla carta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+                    return true;
+                }
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+                {
+                    if (t.importo > u.Contanti)
+                    {
+                        MessageBox.Show("Non hai abbastanza credito in contanti", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+                {
+                    if (t.importo > u.FinanzeOnline)
+                    {
+                        MessageBox.Show("Non hai abbastanza credito in finanze online", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+
+            return true;
+        }
+
+        private void AddTransazione()
+        {
+            Transazione temp = createTransazione();
+            if (temp == null)
+            {
+                return;
+            }
+            try
+            {
+                if (!checkBalance(temp))
+                    return;
+                string toSend = JsonConvert.SerializeObject(temp);
+                if (string.IsNullOrEmpty(toSend))
+                    return;
+
+                writer.WriteLine("aggiungiTransazione|" + toSend + "|" + u.Username);
+                writer.Flush();
+
+                string response = reader.ReadLine();
+                bool aggiunto = bool.Parse(response);
+
+                if (aggiunto)
+                {
+                    MessageBox.Show("Transazione con id: " + temp.id + " aggiunta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    TransazioneAggiunta?.Invoke(temp);
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Impossibile completare la transazione", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        private bool checkId(Transazione t)
+        {
+            foreach(Transazione tr in u.Transazioni)
+            {
+                if (tr.id == t.id) return true;
+            }
+
+            return false;
+        }
+
+        private void PopulateCombo()
+        {
+            // Popola la ComboBox per il MetodoDiPagamento
+            comboBox1.DataSource = Enum.GetValues(typeof(MetodoDiPagamento));
+
+            // Popola la ComboBox per la NaturaTransazione
+            comboBox3.DataSource = Enum.GetValues(typeof(NaturaTransazione));
+
+            // Popola la ComboBox per le categorie
+            comboBox2.DataSource = categorie;
+            comboBox2.DisplayMember = "nomeCategoria";
         }
     }
 }

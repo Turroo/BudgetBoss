@@ -108,6 +108,8 @@ public class Server
                 return AggiungiCategoria(categorie, parts[1]);
             case "rimuoviCategoria":
                 return RimuoviCategoria(categorie, parts[1]);
+            case "aggiungiTransazione":
+                return AggiungiTransazione(parts[1], parts[2]);
             default:
                 return "non ci entra";
         }
@@ -318,7 +320,64 @@ public class Server
         Console.WriteLine("Scritta su file la nuova lista categorie aggiornata");
     }
 
+    private static string AggiungiTransazione(string transazioneJson, string username)
+    {
+        User u = GetUser(username);
+        Transazione t = JsonConvert.DeserializeObject<Transazione>(transazioneJson);
+        if(PostAddTransaction(u,t))
+        {
+            Console.WriteLine("Transazione con id: " + t.id + " aggiunta con successo");
+            SaveUserList();
+            return "True";
+        }
+        else
+        {
+            Console.WriteLine("Impossibile aggiungere la transazione con id: " + t.id);
+            return "False";
+        }
 
+
+
+    }
+
+    private static bool PostAddTransaction(User u, Transazione t)
+    {
+        u.Transazioni.Add(t);
+        if (t.naturaTransazione.Equals(NaturaTransazione.Entrata))
+        {
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+            {
+                u.Carte += t.importo;
+            }
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+            {
+                u.Contanti += t.importo;
+            }
+
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+            {
+                u.FinanzeOnline += t.importo;
+            }
+        }
+        else
+        {
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+            {
+                u.Carte -= t.importo;
+            }
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+            {
+                u.Contanti -= t.importo;
+            }
+
+            if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+            {
+                u.FinanzeOnline -= t.importo;
+            }
+        }
+
+        return ReplaceUser(u);
+    }
     private static bool ReplaceUser(User toAdd)
     {
         foreach (User u in usersList)
@@ -332,6 +391,23 @@ public class Server
         }
 
         return false;
+    }
+
+    private static User GetUser(string username)
+    {
+        User result = null;
+        foreach(User u in usersList)
+        {
+            if(u.Username == username)
+            {
+                result = u;
+                return result;
+            }
+                
+        }
+
+        return result;
+
     }
 
 

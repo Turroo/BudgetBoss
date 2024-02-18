@@ -18,7 +18,6 @@ namespace BudgetBossClient
         private StreamReader reader;
         private User user;
         private List<Categoria> categorie;
-        private List<Transazione> transazioniUtente;
         public GestioneFinanze(StreamWriter writer, StreamReader reader, User user, List<Categoria> categorie)
         {
             InitializeComponent();
@@ -26,9 +25,9 @@ namespace BudgetBossClient
             this.reader = reader;
             this.user = user;
             this.categorie = categorie;
-            this.transazioniUtente = user.Transazioni;
+            this.user.Transazioni = user.Transazioni;
             UpdateValues();
-            PopolaTabella(transazioniUtente);
+            PopolaTabella(user.Transazioni);
         }
 
         private void UpdateValues()
@@ -107,7 +106,7 @@ namespace BudgetBossClient
         private void MetodoPagamentoScelto(string metodo)
         {
             MetodoDiPagamento m = (MetodoDiPagamento)Enum.Parse(typeof(MetodoDiPagamento),metodo);
-            PopolaTabella(filtraMetodo(transazioniUtente,m));
+            PopolaTabella(filtraMetodo(user.Transazioni,m));
 
         }
 
@@ -121,13 +120,13 @@ namespace BudgetBossClient
                     cat = c; break;
                 }
             }
-            PopolaTabella(filtraCategoria(transazioniUtente, cat));
+            PopolaTabella(filtraCategoria(user.Transazioni, cat));
         }
 
         private void NaturaScelta(string natura)
         {
             NaturaTransazione n = (NaturaTransazione)Enum.Parse(typeof(NaturaTransazione), natura);
-            PopolaTabella(filtraNatura(transazioniUtente, n));
+            PopolaTabella(filtraNatura(user.Transazioni, n));
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -153,39 +152,64 @@ namespace BudgetBossClient
             }
             else
             {
-                PopolaTabella(transazioniUtente);
+                PopolaTabella(user.Transazioni);
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            PopolaTabella(transazioniUtente);
+            PopolaTabella(user.Transazioni);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            AggiungiTransazione aggiungiTransazione = new AggiungiTransazione(writer, reader, user,categorie);
+            aggiungiTransazione.TransazioneAggiunta += HandleNewTransaction;
+            aggiungiTransazione.Show();
         }
 
-        private void AddTransazione(Transazione t)
+        private void HandleNewTransaction(Transazione t)
         {
-            try
+            user.Transazioni.Add(t);
+            if(t.naturaTransazione.Equals(NaturaTransazione.Entrata))
             {
-                string toSend = JsonConvert.SerializeObject(t);
-                if (string.IsNullOrEmpty(toSend))
-                    return;
-                writer.WriteLine("aggiungiTransazione|" + toSend);
-                writer.Flush();
-
-                string response = reader.ReadLine();
-                bool aggiunto = bool.Parse(response);
-
-                if(aggiunto)
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
                 {
-                    MessageBox.Show("Transazione " + t.id + " aggiunta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    user.Carte += t.importo;
+                }
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+                {
+                    user.Contanti += t.importo;
+                }
+
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+                {
+                    user.FinanzeOnline += t.importo;
                 }
             }
+            else
+            {
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Carte))
+                {
+                    user.Carte -= t.importo;
+                }
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.Contanti))
+                {
+                    user.Contanti -= t.importo;
+                }
+
+                if (t.metodoDiPagamento.Equals(MetodoDiPagamento.FinanzeOnline))
+                {
+                    user.FinanzeOnline -= t.importo;
+                }
+            }
+
+            UpdateValues();
+            PopolaTabella(user.Transazioni);
         }
+
+
+       
     }
 
 
