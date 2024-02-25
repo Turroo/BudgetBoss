@@ -55,9 +55,10 @@ namespace BudgetBossClient
                 MessageBox.Show("Login effettuato con successo!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 User currentUser = getUser();
                 List<Categoria> categorie = getCategorie();
+                List<Gruppo> gruppi = getGruppi();
                 if (currentUser!=null && categorie!=null)
                 {
-                    HomeDashboard homeView = new HomeDashboard(writer, reader, currentUser, categorie);
+                    HomeDashboard homeView = new HomeDashboard(writer, reader, currentUser, categorie, gruppi);
                     homeView.Show();
                     this.Hide();
                 }
@@ -98,6 +99,24 @@ namespace BudgetBossClient
                 List<Categoria> categorie = JsonConvert.DeserializeObject<List<Categoria>>(response);
                 MessageBox.Show("Lista categorie ottenuta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return categorie;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossibile ottenere la lista categorie corrente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        private List<Gruppo> getGruppi()
+        {
+            try
+            {
+                writer.WriteLine("getGruppi|");
+                writer.Flush();
+                string response = reader.ReadLine();
+                List<Gruppo> gruppi = JsonConvert.DeserializeObject<List<Gruppo>>(response);
+                MessageBox.Show("Lista gruppi ottenuta con successo", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return gruppi;
             }
             catch (Exception ex)
             {

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 
 public class Server
@@ -15,14 +16,17 @@ public class Server
     private static StreamReader reader;
     private static List<User> usersList = new List<User>();
     private static List<Categoria> categorie = new List<Categoria>();
+    private static List<Gruppo> groupsList = new List<Gruppo>();
     private static readonly string userListFilePath = "users.json";
     private static readonly string categorieFilePath = "categorie.json";
+    private static readonly string gruppiFilePath = "gruppi.json";
     private static User temp;
 
     public static void Main(string[] args)
     {
         LoadUserList();
         LoadCategorie();
+        LoadGroupsList();
         try
         {
             // Crea un'endpoint per il server
@@ -104,6 +108,8 @@ public class Server
                 return SendCurrentUser(temp);
             case "getCategorie":
                 return SendCategorie(categorie);
+            case "getGruppi":
+                return SendGruppi(groupsList);
             case "aggiungiCategoria":
                 return AggiungiCategoria(categorie, parts[1]);
             case "rimuoviCategoria":
@@ -112,6 +118,12 @@ public class Server
                 return AggiungiTransazione(parts[1], parts[2]);
             case "rimuoviTransazione":
                 return RimuoviTransazione(parts[1], parts[2]);
+            case "creaGruppo":
+                return CreaGruppo(parts[1]);
+            case "uniscitiAGruppo":
+                return UniscitiAGruppo(parts[1]);
+            case "abbandonaGruppo":
+                return AbbandonaGruppo(parts[1]);
             default:
                 return "non ci entra";
         }
@@ -190,6 +202,12 @@ public class Server
         return JsonConvert.SerializeObject(categorie);
     }
 
+    private static string SendGruppi(List<Gruppo> gruppi)
+    {
+        Console.WriteLine("Inviato con successo al client la lista di gruppi");
+        return JsonConvert.SerializeObject(gruppi);
+    }
+
     private static string AggiungiCategoria(List<Categoria> categorie,string categoria)
     {
         if(categorie.Count == 8)
@@ -230,6 +248,41 @@ public class Server
         }
     }
 
+    private static string CreaGruppo(string nomeGruppo)
+    {
+        Gruppo g = new Gruppo(nomeGruppo, temp);
+        groupsList.Add(g);
+        temp.isAdmin = true;
+        temp.gruppiAppartenenza.Add(g.nomeGruppo);
+        Console.WriteLine("Creato con successo il gruppo " + g.nomeGruppo);
+        SaveGroupsList();
+        SaveUserList();
+        return "True";
+    }
+
+    private static string UniscitiAGruppo(string nomeGruppo)
+    {
+        Gruppo g = groupsList.Find(gr => gr.nomeGruppo  == nomeGruppo);
+        g.utenti.Add(temp);
+        temp.gruppiAppartenenza.Add(g.nomeGruppo);
+        Console.WriteLine("Unito con successo al gruppo " + g.nomeGruppo);
+        SaveGroupsList();
+        SaveUserList();
+        return "True";
+    }
+
+    private static string AbbandonaGruppo(string nomeGruppo)
+    {
+        Gruppo g = groupsList.Find(gr => gr.nomeGruppo == nomeGruppo);
+        RemoveUserFromGroup(g, temp);
+        ReplaceGroup(g);
+        temp.gruppiAppartenenza.Remove(g.nomeGruppo);
+        Console.WriteLine("Rimosso con successo dal gruppo " + g.nomeGruppo);
+        SaveGroupsList();
+        SaveUserList();
+        return "True";
+    }
+
     private static void LoadUserList()
     {
         if (File.Exists(userListFilePath))
@@ -254,6 +307,33 @@ public class Server
             string path = "users.json";
             File.Create(path).Close();
             Console.WriteLine("File utenti creato con successo.");
+        }
+    }
+
+    private static void LoadGroupsList()
+    {
+        if (File.Exists(gruppiFilePath))
+        {
+            string json = File.ReadAllText(gruppiFilePath);
+            if (!string.IsNullOrEmpty(json))
+            {
+                groupsList = JsonConvert.DeserializeObject<List<Gruppo>>(json);
+                Console.WriteLine("Aperta con successo la lista gruppi, file popolato");
+            }
+            else
+            {
+                groupsList = new List<Gruppo>();
+                Console.WriteLine("Aperta con successo la lista gruppi, file vuoto");
+            }
+
+        }
+        else
+        {
+            usersList = new List<User>();
+            Console.WriteLine("Aperta con successo la lista gruppi, il file non esisteva");
+            string path = gruppiFilePath;
+            File.Create(path).Close();
+            Console.WriteLine("File gruppi creato con successo.");
         }
     }
 
@@ -320,6 +400,13 @@ public class Server
         string json = JsonConvert.SerializeObject(categorie);
         File.WriteAllText(categorieFilePath, json);
         Console.WriteLine("Scritta su file la nuova lista categorie aggiornata");
+    }
+
+    private static void SaveGroupsList()
+    {
+        string json = JsonConvert.SerializeObject(groupsList);
+        File.WriteAllText(gruppiFilePath, json);
+        Console.WriteLine("Scritta su file la nuova lista gruppi aggiornata");
     }
 
     private static string AggiungiTransazione(string transazioneJson, string username)
@@ -411,7 +498,33 @@ public class Server
 
         return false;
     }
-    
+
+    private static void ReplaceGroup(Gruppo toAdd)
+    {
+        foreach(Gruppo g in groupsList)
+        {
+            if(g.nomeGruppo == toAdd.nomeGruppo)
+            {
+                groupsList.Remove(g);
+                groupsList.Add(toAdd);
+                return;
+            }
+        }
+
+        
+    }
+
+    private static void RemoveUserFromGroup(Gruppo g, User user)
+    {
+        for (int i = 0; i < g.utenti.Count; i++)
+        {
+            if (user.Username == g.utenti[i].Username)
+            {
+                g.utenti.RemoveAt(i);
+            }
+        }
+    }
+
     private static bool PostRemoveTransaction(User u, Transazione t)
     {
         if (!RemoveTransactionFromUser(u, t.id))
@@ -503,6 +616,9 @@ public class User
     public double Carte { get; set; }
     public double FinanzeOnline {  get; set; }
 
+    public bool isAdmin { get; set; }
+    public List<string> gruppiAppartenenza { get; set; }
+
     public List<Transazione> Transazioni {  get; set; }
 
     public User(String username, String password)
@@ -513,6 +629,8 @@ public class User
         Carte = 0;
         FinanzeOnline = 0;
         Transazioni = new List<Transazione>();
+        this.isAdmin = false;
+        this.gruppiAppartenenza = new List<string>();
     }
 }
 
@@ -536,6 +654,7 @@ public class Transazione
     public Categoria categoria { get; set; }
     public NaturaTransazione naturaTransazione{ get; set; }
     
+    
     public Transazione(int id, double importo, MetodoDiPagamento metodoDiPagamento, DateTime dateTime, Categoria categoria, NaturaTransazione naturaTransazione)
     {
         this.id = id;
@@ -544,6 +663,7 @@ public class Transazione
         this.dateTime = dateTime;
         this.categoria = categoria;
         this.naturaTransazione = naturaTransazione;
+        
     }
 
 
@@ -557,5 +677,21 @@ public enum MetodoDiPagamento
 public enum NaturaTransazione
 {
     Entrata, Uscita
+}
+
+public class Gruppo
+{
+    public string nomeGruppo { get; set; }
+    public User admin {  get; set; }
+    public List<User> utenti {  get; set; }
+
+    public Gruppo(string nomeGruppo,User u)
+    {
+        this.nomeGruppo = nomeGruppo;
+        this.admin = u;
+        this.utenti = new List<User>();
+        utenti.Add(u);
+    }
+    
 }
 

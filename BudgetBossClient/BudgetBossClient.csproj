@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbbandonaGruppo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbbandonaGruppo.Designer.cs">
+      <DependentUpon>AbbandonaGruppo.cs</DependentUpon>
+    </Compile>
     <Compile Include="AggiungiCategoria.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +66,12 @@
     </Compile>
     <Compile Include="AggiungiTransazione.Designer.cs">
       <DependentUpon>AggiungiTransazione.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreaGruppo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreaGruppo.Designer.cs">
+      <DependentUpon>CreaGruppo.cs</DependentUpon>
     </Compile>
     <Compile Include="FinanzeIniziali.cs">
       <SubType>Form</SubType>
@@ -84,6 +96,12 @@
     </Compile>
     <Compile Include="GestioneFinanze.Designer.cs">
       <DependentUpon>GestioneFinanze.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GestioneGruppi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GestioneGruppi.Designer.cs">
+      <DependentUpon>GestioneGruppi.cs</DependentUpon>
     </Compile>
     <Compile Include="HomeDashboard.cs">
       <SubType>Form</SubType>
@@ -117,6 +135,18 @@
     <Compile Include="RimuoviTransazione.Designer.cs">
       <DependentUpon>RimuoviTransazione.cs</DependentUpon>
     </Compile>
+    <Compile Include="UniscitiAGruppo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UniscitiAGruppo.Designer.cs">
+      <DependentUpon>UniscitiAGruppo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VisualizzaDettagliGruppo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VisualizzaDettagliGruppo.Designer.cs">
+      <DependentUpon>VisualizzaDettagliGruppo.cs</DependentUpon>
+    </Compile>
     <Compile Include="WindowCategorie.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,11 +159,17 @@
     <Compile Include="WindowNatura.Designer.cs">
       <DependentUpon>WindowNatura.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AbbandonaGruppo.resx">
+      <DependentUpon>AbbandonaGruppo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AggiungiCategoria.resx">
       <DependentUpon>AggiungiCategoria.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AggiungiTransazione.resx">
       <DependentUpon>AggiungiTransazione.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreaGruppo.resx">
+      <DependentUpon>CreaGruppo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FinanzeIniziali.resx">
       <DependentUpon>FinanzeIniziali.cs</DependentUpon>
@@ -146,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GestioneFinanze.resx">
       <DependentUpon>GestioneFinanze.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GestioneGruppi.resx">
+      <DependentUpon>GestioneGruppi.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HomeDashboard.resx">
       <DependentUpon>HomeDashboard.cs</DependentUpon>
@@ -170,6 +209,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RimuoviTransazione.resx">
       <DependentUpon>RimuoviTransazione.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UniscitiAGruppo.resx">
+      <DependentUpon>UniscitiAGruppo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VisualizzaDettagliGruppo.resx">
+      <DependentUpon>VisualizzaDettagliGruppo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WindowCategorie.resx">
       <DependentUpon>WindowCategorie.cs</DependentUpon>

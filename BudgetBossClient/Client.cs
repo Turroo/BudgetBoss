@@ -86,9 +86,12 @@ namespace BudgetBossClient
         public double Carte { get; set; }
         public double FinanzeOnline { get; set; }
 
+        public bool isAdmin { get; set; }
+        public List<string> gruppiAppartenenza { get; set; }
+
         public List<Transazione> Transazioni { get; set; }
 
-        public User(string username, string password)
+        public User(String username, String password)
         {
             Username = username;
             Password = password;
@@ -96,9 +99,9 @@ namespace BudgetBossClient
             Carte = 0;
             FinanzeOnline = 0;
             Transazioni = new List<Transazione>();
+            this.isAdmin = false;
+            this.gruppiAppartenenza = new List<string>();
         }
-
-        
     }
 
     public class Categoria
@@ -148,6 +151,22 @@ namespace BudgetBossClient
     public enum NaturaTransazione
     {
         Entrata, Uscita
+    }
+
+    public class Gruppo
+    {
+        public string nomeGruppo { get; set; }
+        public User admin { get; set; }
+        public List<User> utenti { get; set; }
+
+        public Gruppo(string nomeGruppo, User u)
+        {
+            this.nomeGruppo = nomeGruppo;
+            this.admin = u;
+            this.utenti = new List<User>();
+            utenti.Add(u);
+        }
+
     }
 
 }

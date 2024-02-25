@@ -19,17 +19,24 @@ namespace BudgetBossClient
         private FirstView firstView;
         private GestioneCategorie gestioneCategorie;
         private GestioneFinanze gestioneFinanze;
+        private GestioneGruppi gestioneGruppi;
         private User user;
         private List<Categoria> categorie;
-        public HomeDashboard(StreamWriter writer, StreamReader reader, User user, List<Categoria> categorie)
+        private List<Gruppo> groupsList;
+        public HomeDashboard(StreamWriter writer, StreamReader reader, User user, List<Categoria> categorie, List<Gruppo> groupsList)
         {
             InitializeComponent();
             this.writer = writer;
             this.reader = reader;
             this.user = user;
             this.categorie = categorie;
+            this.groupsList = groupsList;
             this.labelUsername.Text = user.Username;
             addHome();
+            if(!user.isAdmin)
+            {
+                button4.Visible = false;
+            }
             
         }
 
@@ -59,6 +66,16 @@ namespace BudgetBossClient
             viewPanel.Controls.Add(gestioneFinanze);
             gestioneFinanze.BringToFront();
         }
+
+        private void addGestioneGruppi()
+        {
+            viewPanel.Controls.Clear();
+            gestioneGruppi = new GestioneGruppi(writer, reader, user, groupsList);
+            gestioneGruppi.Dock = DockStyle.Fill;
+            viewPanel.Controls.Add(gestioneGruppi);
+            gestioneGruppi.BringToFront();
+        }
+
         private void HomeButton_Click(object sender, EventArgs e)
         {
             addHome();
@@ -72,6 +89,16 @@ namespace BudgetBossClient
         private void button2_Click(object sender, EventArgs e)
         {
             addGestioneFinanze();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            addGestioneGruppi();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
