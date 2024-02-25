@@ -124,6 +124,10 @@ public class Server
                 return UniscitiAGruppo(parts[1]);
             case "abbandonaGruppo":
                 return AbbandonaGruppo(parts[1]);
+            case "rimuoviPartecipante":
+                return RimuoviPartecipante(parts[1], parts[2]);
+            case "eliminaGruppo":
+                return EliminaGruppo(parts[1]);
             default:
                 return "non ci entra";
         }
@@ -277,10 +281,40 @@ public class Server
         RemoveUserFromGroup(g, temp);
         ReplaceGroup(g);
         temp.gruppiAppartenenza.Remove(g.nomeGruppo);
-        Console.WriteLine("Rimosso con successo dal gruppo " + g.nomeGruppo);
+        Console.WriteLine("Abbandonato con successo il gruppo " + g.nomeGruppo);
         SaveGroupsList();
         SaveUserList();
         return "True";
+    }
+
+    private static string RimuoviPartecipante(string username, string nomeGruppo)
+    {
+        Gruppo g = groupsList.Find(gr => gr.nomeGruppo == nomeGruppo);
+        User u = usersList.Find(ut => ut.Username == username);
+
+        RemoveUserFromGroup(g, u);
+        ReplaceGroup(g);
+        u.gruppiAppartenenza.Remove(nomeGruppo);
+        ReplaceUser(u);
+        Console.WriteLine("Rimosso l'utente " + username +" con successo dal gruppo " + g.nomeGruppo);
+        SaveGroupsList();
+        SaveUserList();
+        return "True";
+    }
+
+    private static string EliminaGruppo(string nomeGruppo)
+    {
+        Gruppo g = groupsList.Find(gr => gr.nomeGruppo == nomeGruppo);
+        groupsList.Remove(g);
+        temp.gruppiAppartenenza.Remove(g.nomeGruppo);
+        isStillAdmin();
+        deleteGroupFromAllUsers(nomeGruppo);
+        Console.WriteLine("Eliminato definitivamente il gruppo: " + nomeGruppo);
+        SaveGroupsList();
+        SaveUserList();
+        return "True";
+
+
     }
 
     private static void LoadUserList()
@@ -601,6 +635,47 @@ public class Server
 
         return result;
 
+    }
+
+    private static void isStillAdmin()
+    {
+        if (temp.gruppiAppartenenza.Count == 0)
+        {
+            temp.isAdmin = false;
+        }
+        else
+        {
+            if (howManyAdmin() == 0)
+            {
+                temp.isAdmin = false;
+            }
+            else
+            { temp.isAdmin = true; }
+        }
+    }
+
+    private static int howManyAdmin()
+    {
+        int result = 0;
+        foreach (string g in temp.gruppiAppartenenza)
+        {
+            Gruppo tmp = groupsList.Find(gr => gr.nomeGruppo == g);
+            if (tmp.admin.Username == temp.Username)
+                result++;
+        }
+
+        return result;
+    }
+
+    private static void deleteGroupFromAllUsers(string nomeGruppo)
+    {
+        foreach(User u in usersList)
+        {
+            if(u.gruppiAppartenenza.Contains(nomeGruppo))
+            {
+                u.gruppiAppartenenza.Remove(nomeGruppo);
+            }
+        }
     }
 
 

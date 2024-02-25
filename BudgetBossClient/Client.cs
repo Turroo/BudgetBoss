@@ -169,4 +169,15 @@ namespace BudgetBossClient
 
     }
 
+    public class GruppoEventArgs : EventArgs
+    {
+        public Gruppo Gruppo { get; }
+
+        public GruppoEventArgs(Gruppo gruppo)
+        {
+            Gruppo = gruppo;
+        }
+    }
+
+
 }

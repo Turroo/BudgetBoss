@@ -17,6 +17,9 @@ namespace BudgetBossClient
         private StreamReader reader;
         private User u;
         private List<Gruppo> groupsList;
+
+        public event EventHandler<GruppoEventArgs> NewGroupCreated;
+        public event EventHandler<GruppoEventArgs> AdminRemoved;
         public GestioneGruppi(StreamWriter writer, StreamReader reader, User u, List<Gruppo> groupsList)
         {
             InitializeComponent();
@@ -101,9 +104,20 @@ namespace BudgetBossClient
             u.isAdmin = true;
             u.gruppiAppartenenza.Add(g.nomeGruppo);
             UpdateValues();
+            OnNewGroupCreated(new GruppoEventArgs(g));
+
 
         }
 
+        protected virtual void OnNewGroupCreated(GruppoEventArgs e)
+        {
+            NewGroupCreated?.Invoke(this, e);
+        }
+
+        private void HandleAdminRemoved(Gruppo g)
+        {
+            AdminRemoved?.Invoke(this, new GruppoEventArgs(g));
+        }
         private void HandleNewJoin(Gruppo g)
         {
             Gruppo toEdit = groupsList.Find(gr => gr.nomeGruppo == g.nomeGruppo);
@@ -126,6 +140,11 @@ namespace BudgetBossClient
             ReplaceGroup(toEdit);
             u.gruppiAppartenenza.Remove(toEdit.nomeGruppo);
             UpdateValues();
+            bool isAdminInAnyGroup = groupsList.Any(gr => gr.admin.Username == u.Username);
+            if (!isAdminInAnyGroup)
+            {
+                HandleAdminRemoved(toEdit); // Innesta l'evento AdminRemoved se l'utente non è più admin di nessun gruppo
+            }
         }
 
         private void ReplaceGroup(Gruppo toAdd)

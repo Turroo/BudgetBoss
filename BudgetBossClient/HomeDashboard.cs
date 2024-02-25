@@ -20,6 +20,7 @@ namespace BudgetBossClient
         private GestioneCategorie gestioneCategorie;
         private GestioneFinanze gestioneFinanze;
         private GestioneGruppi gestioneGruppi;
+        private GestioneAdmin gestioneAdmin;
         private User user;
         private List<Categoria> categorie;
         private List<Gruppo> groupsList;
@@ -71,9 +72,20 @@ namespace BudgetBossClient
         {
             viewPanel.Controls.Clear();
             gestioneGruppi = new GestioneGruppi(writer, reader, user, groupsList);
+            gestioneGruppi.NewGroupCreated += GestioneGruppi_NewGroupCreated;
+            gestioneGruppi.AdminRemoved += GestioneGruppi_AdminRemoved;
             gestioneGruppi.Dock = DockStyle.Fill;
             viewPanel.Controls.Add(gestioneGruppi);
             gestioneGruppi.BringToFront();
+        }
+
+        private void addGestioneAdmin()
+        {
+            viewPanel.Controls.Clear();
+            gestioneAdmin = new GestioneAdmin(writer, reader, user, groupsList);
+            gestioneAdmin.Dock = DockStyle.Fill;
+            viewPanel.Controls.Add(gestioneAdmin);
+            gestioneAdmin.BringToFront();
         }
 
         private void HomeButton_Click(object sender, EventArgs e)
@@ -98,7 +110,22 @@ namespace BudgetBossClient
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+            addGestioneAdmin();
+        }
+
+        private void GestioneGruppi_NewGroupCreated(object sender, GruppoEventArgs e)
+        {
+            // Abilita il bottone "GestioneAdmin" se l'utente è un admin
+            if (user.isAdmin)
+            {
+                button4.Visible = true;
+            }
+        }
+
+        private void GestioneGruppi_AdminRemoved(object sender, GruppoEventArgs e)
+        {
+            button4.Visible = false; // Nasconde la sezione GestioneAdmin se l'utente non è più admin di nessun gruppo
+            addHome(); // Reindirizza l'utente alla HomeView
         }
     }
 }

@@ -85,6 +85,12 @@
     <Compile Include="FirstView.Designer.cs">
       <DependentUpon>FirstView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GestioneAdmin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GestioneAdmin.Designer.cs">
+      <DependentUpon>GestioneAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="GestioneCategorie.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -176,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FirstView.resx">
       <DependentUpon>FirstView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GestioneAdmin.resx">
+      <DependentUpon>GestioneAdmin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GestioneCategorie.resx">
       <DependentUpon>GestioneCategorie.cs</DependentUpon>
