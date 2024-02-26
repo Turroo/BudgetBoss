@@ -64,7 +64,7 @@ namespace BudgetBossClient
             // LabelContanti
             // 
             this.LabelContanti.Font = new System.Drawing.Font("Calibri", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelContanti.Location = new System.Drawing.Point(218, 80);
+            this.LabelContanti.Location = new System.Drawing.Point(193, 80);
             this.LabelContanti.Name = "LabelContanti";
             this.LabelContanti.Size = new System.Drawing.Size(127, 28);
             this.LabelContanti.TabIndex = 8;
@@ -82,11 +82,11 @@ namespace BudgetBossClient
             // LabelCarte
             // 
             this.LabelCarte.Font = new System.Drawing.Font("Calibri", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelCarte.Location = new System.Drawing.Point(218, 156);
+            this.LabelCarte.Location = new System.Drawing.Point(193, 156);
             this.LabelCarte.Name = "LabelCarte";
-            this.LabelCarte.Size = new System.Drawing.Size(127, 28);
+            this.LabelCarte.Size = new System.Drawing.Size(127, 26);
             this.LabelCarte.TabIndex = 10;
-            this.LabelCarte.Text = "Carte di Credito";
+            this.LabelCarte.Text = "Carte ";
             this.LabelCarte.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtFinanzeOnline

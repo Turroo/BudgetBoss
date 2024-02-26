@@ -32,16 +32,18 @@ namespace BudgetBossClient
             }
             if(this.radioButton2.Checked)
             {
-                metodoPagamento = "Carte";
+                metodoPagamento = "FinanzeOnline";
             }
             if(this.radioButton3.Checked)
             {
-                metodoPagamento = "FinanzeOnline";
+                metodoPagamento = "Carte";
             }
 
             MetodoPagamentoSelezionato?.Invoke(metodoPagamento);
 
             this.Close();
         }
+
+        
     }
 }

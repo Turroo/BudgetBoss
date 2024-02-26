@@ -35,6 +35,7 @@ namespace BudgetBossClient
             this.label7.Text = user.Contanti.ToString() + " €";
             this.label8.Text = user.Carte.ToString() + " €";
             this.label9.Text = user.FinanzeOnline.ToString() + " €";
+            this.label2.Text = (user.FinanzeOnline + user.Contanti + user.Carte).ToString() + " €";
         }
 
         private void PopolaRiga(int rowIndex,Transazione t)

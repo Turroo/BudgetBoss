@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BudgetBossClient
 {
@@ -21,7 +22,8 @@ namespace BudgetBossClient
         {
             InitializeComponent();
             this.writer = writer;
-            this.reader = reader;  
+            this.reader = reader;
+            txtPassword.PasswordChar = '*';
 
         }
 
